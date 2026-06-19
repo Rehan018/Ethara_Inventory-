@@ -73,6 +73,8 @@ Backend pre-deploy command:
 ./scripts/render-migrate.sh
 ```
 
+Render free web services do not support pre-deploy commands. For the free tier, the Blueprint uses only `startCommand`, and `render-start.sh` runs `alembic upgrade head` before starting Gunicorn.
+
 Backend start command:
 
 ```bash
@@ -92,7 +94,6 @@ Backend:
 - Runtime: Python
 - Root directory: `backend`
 - Build command: `./scripts/render-build.sh`
-- Pre-deploy command: `./scripts/render-migrate.sh`
 - Start command: `./scripts/render-start.sh`
 - Health check path: `/health`
 

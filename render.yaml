@@ -11,7 +11,6 @@ services:
     plan: free
     rootDir: backend
     buildCommand: ./scripts/render-build.sh
-    preDeployCommand: ./scripts/render-migrate.sh
     startCommand: ./scripts/render-start.sh
     healthCheckPath: /health
     envVars:

@@ -184,6 +184,7 @@ Render:
   - `render-migrate.sh`
   - `render-start.sh`
 - Frontend build script lives in `frontend/scripts/render-build.sh`.
+- On Render free tier, migrations run from the backend start script because pre-deploy commands are not available on free services.
 - After deployment, set `BACKEND_CORS_ORIGINS` to the live frontend URL and `VITE_API_BASE_URL` to the live backend URL.
 - Check the backend at `/health` and `/docs`.
 
