@@ -31,7 +31,7 @@ Deployment:
 
 - Backend: Render
 - Database: Render PostgreSQL
-- Frontend: Vercel
+- Frontend: Render static site or Vercel
 
 ## What is included
 
@@ -178,10 +178,14 @@ Dashboard:
 
 Render:
 
-- Create a Render PostgreSQL database.
-- Deploy the backend as a Docker web service from the `backend` directory.
-- Set `DATABASE_URL`, `JWT_SECRET_KEY`, and `BACKEND_CORS_ORIGINS`.
-- After the backend is live, check `/health` and `/docs`.
+- `render.yaml` can create the PostgreSQL database, backend API, and frontend static site from one Blueprint.
+- Backend scripts live in `backend/scripts/`:
+  - `render-build.sh`
+  - `render-migrate.sh`
+  - `render-start.sh`
+- Frontend build script lives in `frontend/scripts/render-build.sh`.
+- After deployment, set `BACKEND_CORS_ORIGINS` to the live frontend URL and `VITE_API_BASE_URL` to the live backend URL.
+- Check the backend at `/health` and `/docs`.
 
 Vercel:
 

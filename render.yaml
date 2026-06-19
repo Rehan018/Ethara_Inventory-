@@ -7,9 +7,12 @@ databases:
 services:
   - type: web
     name: ethara-inventory-api
-    env: docker
+    runtime: python
     plan: free
     rootDir: backend
+    buildCommand: ./scripts/render-build.sh
+    preDeployCommand: ./scripts/render-migrate.sh
+    startCommand: ./scripts/render-start.sh
     healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
@@ -22,3 +25,19 @@ services:
         value: 60
       - key: BACKEND_CORS_ORIGINS
         sync: false
+      - key: BACKEND_CORS_ORIGIN_REGEX
+        value: https://.*
+
+  - type: web
+    name: ethara-inventory-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: ./scripts/render-build.sh
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

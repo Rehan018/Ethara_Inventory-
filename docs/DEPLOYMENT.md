@@ -27,37 +27,86 @@ Use this image link in the final submission:
 https://hub.docker.com/r/<dockerhub-username>/ethara-inventory-api
 ```
 
-## 3. Create Render PostgreSQL
+## 3. Deploy on Render with the Blueprint
 
-Create a new PostgreSQL database on Render and keep the internal database URL handy.
+The root `render.yaml` is ready for Render Blueprints. It creates:
 
-The backend accepts Render's normal `postgresql://...` URL and converts it to the SQLAlchemy psycopg driver format internally, so no manual URL editing is needed.
+- PostgreSQL database
+- Backend API web service
+- Frontend static site
 
-## 4. Deploy backend on Render
+In Render:
 
-Create a new Render Web Service:
+1. New → Blueprint
+2. Select the GitHub repository
+3. Use the root `render.yaml`
+4. Apply the Blueprint
 
-- Runtime: Docker
-- Root directory: `backend`
-- Health check path: `/health`
+Render will ask for the values marked `sync: false`:
 
 Environment variables:
 
 ```txt
-DATABASE_URL=<Render PostgreSQL internal database URL>
-JWT_SECRET_KEY=<long random secret>
-ACCESS_TOKEN_EXPIRE_MINUTES=60
-BACKEND_CORS_ORIGINS=https://<your-vercel-app>.vercel.app
+BACKEND_CORS_ORIGINS=https://<your-render-frontend>.onrender.com
+VITE_API_BASE_URL=https://<your-render-backend>.onrender.com
 ```
+
+The backend receives `DATABASE_URL` from the Render PostgreSQL service automatically. The backend accepts Render's normal `postgresql://...` URL and converts it to the SQLAlchemy psycopg driver format internally, so no manual URL editing is needed.
 
 After deploy:
 
 - Open `https://<backend-url>/health`
 - Open `https://<backend-url>/docs`
+- Open `https://<frontend-url>`
 
-## 5. Deploy frontend on Vercel
+## 4. Render scripts
 
-Create a new Vercel project from the same GitHub repo.
+Backend build command:
+
+```bash
+./scripts/render-build.sh
+```
+
+Backend pre-deploy command:
+
+```bash
+./scripts/render-migrate.sh
+```
+
+Backend start command:
+
+```bash
+./scripts/render-start.sh
+```
+
+Frontend build command:
+
+```bash
+./scripts/render-build.sh
+```
+
+If you create services manually in the Render dashboard, use these settings:
+
+Backend:
+
+- Runtime: Python
+- Root directory: `backend`
+- Build command: `./scripts/render-build.sh`
+- Pre-deploy command: `./scripts/render-migrate.sh`
+- Start command: `./scripts/render-start.sh`
+- Health check path: `/health`
+
+Frontend:
+
+- Runtime: Static Site
+- Root directory: `frontend`
+- Build command: `./scripts/render-build.sh`
+- Publish directory: `dist`
+- Rewrite rule: `/*` → `/index.html`
+
+## 5. Optional Vercel frontend
+
+If you prefer Vercel for the frontend, create a new Vercel project from the same GitHub repo.
 
 Settings:
 
