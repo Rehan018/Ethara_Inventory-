@@ -22,6 +22,8 @@ services:
         generateValue: true
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: 60
+      - key: PYTHON_VERSION
+        value: 3.12.8
       - key: BACKEND_CORS_ORIGINS
         sync: false
       - key: BACKEND_CORS_ORIGIN_REGEX
