@@ -25,7 +25,7 @@ services:
       - key: PYTHON_VERSION
         value: 3.12.8
       - key: BACKEND_CORS_ORIGINS
-        value: https://ethara-inventory-frontend-f9n8.onrender.com
+        value: https://ethara-inventory-frontend-i9n8.onrender.com
       - key: BACKEND_CORS_ORIGIN_REGEX
         value: https://.*\.onrender\.com
 
