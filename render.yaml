@@ -1,0 +1,24 @@
+databases:
+  - name: ethara-inventory-db
+    plan: free
+    databaseName: inventory_db
+    user: inventory
+
+services:
+  - type: web
+    name: ethara-inventory-api
+    env: docker
+    plan: free
+    rootDir: backend
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ethara-inventory-db
+          property: connectionString
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 60
+      - key: BACKEND_CORS_ORIGINS
+        sync: false
