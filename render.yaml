@@ -25,19 +25,21 @@ services:
       - key: PYTHON_VERSION
         value: 3.12.8
       - key: BACKEND_CORS_ORIGINS
-        value: https://ethara-inventory-frontend-13md.onrender.com
+        value: https://ethara-inventory-frontend-f9n8.onrender.com
       - key: BACKEND_CORS_ORIGIN_REGEX
-        value: https://.*
+        value: https://.*\.onrender\.com
 
   - type: web
     name: ethara-inventory-frontend
     runtime: static
     rootDir: frontend
-    buildCommand: ./scripts/render-build.sh
-    staticPublishPath: dist
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
     envVars:
+      - key: NODE_VERSION
+        value: 20.18.1
       - key: VITE_API_BASE_URL
-        value: https://ethara-inventory-api-nz6e.onrender.com
+        sync: false
     routes:
       - type: rewrite
         source: /*
